@@ -4,13 +4,13 @@ import requests
 import paho.mqtt.client as mqtt
 from threading import Timer, Lock
 
-# MQTT設定
+
 BROKER_ADDRESS = "***********.cloud.shiftr.io"
 BROKER_PORT = 1883
-TOPIC1 = "sample"
+TOPIC1 = "behavior"
 TOPIC2 = "send"
-username = "****************"
-password = "***************"
+username = "**********"
+password = "*********"
 
 # バス停データ累積用
 bus_stop_data = {}
@@ -138,7 +138,7 @@ def on_message(client, userdata, msg):
 
         # タイマーのセット
         if bus_stop_name not in pending_timers:
-            timer = Timer(120, handle_timer, args=(client, bus_stop_name))
+            timer = Timer(20, handle_timer, args=(client, bus_stop_name))
             pending_timers[bus_stop_name] = timer
             timer.start()
 
