@@ -4,11 +4,11 @@ import time
 
 # ブローカーの設定      
 
-BROKER_ADDRESS = "alabasterpiper162.cloud.shiftr.io"  # Broker address
+BROKER_ADDRESS = "**************"  # Broker address
 BROKER_PORT = 1883                                 # Broker port
 TOPIC = "sample"                                     # Topic to subscribe to
-username = "alabasterpiper162"
-password = "pYhGGUyUwA2nuOVP"
+username = "*************"
+password = "***********"
 
 # 送信する位置情報
 people_data = {
