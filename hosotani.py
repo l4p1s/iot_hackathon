@@ -6,15 +6,19 @@ import json  # JSONを処理するためのライブラリ
 # 現在の日時を取得
 dt_now = datetime.datetime.now()
 
+
 # MQTT Broker の設定
-BROKER_ADDRESS = "******************.cloud.shiftr.io"
+BROKER_ADDRESS = "********.cloud.shiftr.io"
 BROKER_PORT = 1883
 TOPIC = "send"
-USERNAME = "*****************"
-PASSWORD = "**************"
+USERNAME = "********"
+PASSWORD = "*********"
 
 # テキスト読み上げエンジンの初期化
 engine = pyttsx3.init()
+
+# 再生速度を設定（デフォルトは200程度。小さいほど遅い）
+engine.setProperty('rate', 100)  # 150に調整、必要に応じて変更
 
 # MQTT 接続時のコールバック
 def on_connect(client, userdata, flag, rc):
@@ -38,11 +42,12 @@ def on_message(client, userdata, msg):
         get_on_people = data["get_on_people"]
         get_off_people = data["get_off_people"]
 
-        message = (f"ご乗車ありがとうございました。"
-                   f"{station} バス停です。"
-                   f"{get_on_people} 人乗車されました。"
-                   f"{get_off_people} 人降車されました。"
-                   f"またのご利用をお待ちしております。")
+        message = (f"Thank you for using our bus."
+           f"This is the bus station."
+           f"{get_on_people} people got on the bus."
+           f"{get_off_people} people got off the bus."
+           f"We look forward to serving you again.")
+
         
         # メッセージの表示と読み上げ
         print(message)
