@@ -21,11 +21,13 @@ def main():
 
     # サイドバーで設定
     st.sidebar.header("設定")
-    db_path = st.sidebar.text_input("データベースパス", value="../iot_hack.db")
-    query = st.sidebar.text_area("SQLクエリ", value="SELECT * FROM bus_stop_data")
+    st.sidebar.text_area("データベースパス", value="../iot_hack.db", disabled=True, height=68)
+    st.sidebar.text_area("SQLクエリ", value="SELECT * FROM bus_stop_data", disabled=True, height=100)
 
     # データベース接続とデータ取得
     try:
+        db_path = "../iot_hack.db"
+        query = "SELECT * FROM bus_stop_data"
         conn = connect_db(db_path)
         data = fetch_data(conn, query)
 
@@ -35,7 +37,7 @@ def main():
 
         # データを表示
         st.write("### データベースデータ")
-        # st.dataframe(data)
+        st.dataframe(data)
 
         # フィルタリング
         if 'timestamp' in data.columns:
@@ -51,34 +53,69 @@ def main():
 
         # グラフ化
         st.write("### グラフ化")
-        options = [col for col in ['passengers_boarded', 'passengers_alighted'] if col in filtered_data.columns]
+        graph_type = st.radio("グラフの種類を選択", ("時系列プロット", "バス停名別棒グラフ"))
 
+        options_dict = {
+            'passengers_boarded': '乗車人数',
+            'passengers_alighted': '降車人数'
+        }
+        options = [col for col in options_dict.keys() if col in filtered_data.columns]
+
+        display_options = [options_dict[col] for col in options]
         if options:
-            metric = st.selectbox("グラフ化する項目を選択", options)
+            selected_option = st.selectbox("グラフ化する項目を選択", display_options)
+            metric = [key for key, value in options_dict.items() if value == selected_option][0]
 
-            # Plotlyによる時系列プロット
-            fig = px.line(
-                filtered_data, 
-                x='timestamp', 
-                y=metric, 
-                title=f"{metric} の時系列プロット",
-                labels={
-                    'timestamp': '日時',
-                    metric: metric
-                },
-                template='plotly_white',
-                markers=True
-            )
+            if graph_type == "時系列プロット":
+                # Plotlyによる時系列プロット
+                fig = px.line(
+                    filtered_data,
+                    x='timestamp',
+                    y=metric,
+                    title=f"{selected_option} の時系列プロット",
+                    labels={
+                        'timestamp': '日時',
+                        metric: selected_option
+                    },
+                    template='plotly_white',
+                    markers=True
+                )
 
-            fig.update_traces(line_shape='linear', marker=dict(size=8))
-            fig.update_layout(
-                xaxis_title="日時",
-                yaxis_title=metric,
-                font=dict(size=14)
-            )
+                fig.update_traces(line_shape='linear', marker=dict(size=8))
+                fig.update_layout(
+                    xaxis_title="日時",
+                    yaxis_title=selected_option,
+                    font=dict(size=14)
+                )
 
-            st.plotly_chart(fig)
+                st.plotly_chart(fig)
 
+            elif graph_type == "バス停名別棒グラフ":
+                # バス停名ごとにデータを集計
+                if 'bus_stop_name' in filtered_data.columns:
+                    grouped_data = filtered_data.groupby('bus_stop_name')[metric].sum().reset_index()
+
+                    fig = px.bar(
+                        grouped_data,
+                        x='bus_stop_name',
+                        y=metric,
+                        title=f"{selected_option} のバス停名別棒グラフ",
+                        labels={
+                            'bus_stop_name': 'バス停名',
+                            metric: selected_option
+                        },
+                        template='plotly_white'
+                    )
+
+                    fig.update_layout(
+                        xaxis_title="バス停名",
+                        yaxis_title=selected_option,
+                        font=dict(size=14)
+                    )
+
+                    st.plotly_chart(fig)
+                else:
+                    st.warning("バス停名データが存在しません。")
         else:
             st.info("可視化可能な数値データがありません。")
 
