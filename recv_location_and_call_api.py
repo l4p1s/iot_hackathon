@@ -5,12 +5,12 @@ import paho.mqtt.client as mqtt
 from threading import Timer, Lock
 
 # MQTT設定
-BROKER_ADDRESS = "alabasterpiper162.cloud.shiftr.io"
+BROKER_ADDRESS = "***********.cloud.shiftr.io"
 BROKER_PORT = 1883
 TOPIC1 = "sample"
 TOPIC2 = "send"
-username = "alabasterpiper162"
-password = "pYhGGUyUwA2nuOVP"
+username = "****************"
+password = "***************"
 
 # バス停データ累積用
 bus_stop_data = {}
