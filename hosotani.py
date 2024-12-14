@@ -7,11 +7,11 @@ import json  # JSONを処理するためのライブラリ
 dt_now = datetime.datetime.now()
 
 # MQTT Broker の設定
-BROKER_ADDRESS = "alabasterpiper162.cloud.shiftr.io"
+BROKER_ADDRESS = "******************.cloud.shiftr.io"
 BROKER_PORT = 1883
 TOPIC = "send"
-USERNAME = "alabasterpiper162"
-PASSWORD = "pYhGGUyUwA2nuOVP"
+USERNAME = "*****************"
+PASSWORD = "**************"
 
 # テキスト読み上げエンジンの初期化
 engine = pyttsx3.init()
