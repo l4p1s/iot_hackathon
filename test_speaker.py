@@ -1,28 +1,17 @@
-from gtts import gTTS
-from playsound import playsound
-import os
-import tempfile
+import pyttsx3
 
-def play_japanese_text(text):
-    try:
-        # 日本語テキストを音声合成
-        tts = gTTS(text=text, lang='ja')
+def speak_with_pyttsx3(text):
+    # pyttsx3のエンジンを初期化
+    engine = pyttsx3.init()
+    # 声の速度を設定 (オプション)
+    engine.setProperty('rate', 150)
+    # 声の種類を設定 (オプション)
+    voices = engine.getProperty('voices')
+    engine.setProperty('voice', voices[1].id)  # 女性の声に設定
 
-        # 一時ファイルを作成
-        fd, path = tempfile.mkstemp(suffix=".mp3")
-        try:
-            # 一時ファイルに保存
-            tts.save(path)
-            # 音声ファイルを再生
-            playsound(path)
-        finally:
-            # 再生後に一時ファイルを削除
-            os.close(fd)
-            os.remove(path)
+    # テキストを読み上げ
+    engine.say(text)
+    engine.runAndWait()
 
-    except Exception as e:
-        print(f"エラーが発生しました: {e}")
-
-# 任意の日本語テキストを指定
-play_japanese_text("こんにちは、世界。今日は良い天気ですね。")
-print("再生しました")
+# 英語のテキストを再生
+speak_with_pyttsx3("Hello, how are you?")

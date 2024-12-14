@@ -5,7 +5,7 @@ import plotly.express as px
 from datetime import datetime
 
 # データベース接続
-def connect_db(db_path="../iot_hack.db"):
+def connect_db(db_path="iot_hack.db"):
     """SQLiteデータベースに接続する"""
     conn = sqlite3.connect(db_path)
     return conn
