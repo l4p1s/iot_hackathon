@@ -4,11 +4,11 @@ import time
 
 # ブローカーの設定      
 
-BROKER_ADDRESS = "**************"  # Broker address
+BROKER_ADDRESS = "100.68.28.122"  # Broker address
 BROKER_PORT = 1883                                 # Broker port
 TOPIC = "sample"                                     # Topic to subscribe to
-username = "*************"
-password = "***********"
+# username = "*************"
+# password = "***********"
 
 # 送信する位置情報
 people_data = {
@@ -19,7 +19,7 @@ people_data = {
 # クライアントの初期設定
 client = mqtt.Client()
 
-client.username_pw_set(username, password=password)
+# client.username_pw_set(username, password=password)
 # ブローカーに接続
 client.connect(BROKER_ADDRESS, BROKER_PORT, 60)
 

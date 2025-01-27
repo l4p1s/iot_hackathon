@@ -5,12 +5,12 @@ import paho.mqtt.client as mqtt
 from threading import Timer, Lock
 
 
-BROKER_ADDRESS = "***********.cloud.shiftr.io"
+BROKER_ADDRESS = "100.68.28.122"
 BROKER_PORT = 1883
 TOPIC1 = "behavior"
 TOPIC2 = "send"
-username = "**********"
-password = "*********"
+# username = "**********"
+# password = "*********"
 
 # バス停データ累積用
 bus_stop_data = {}
@@ -150,7 +150,7 @@ def on_message(client, userdata, msg):
 # メイン処理
 if __name__ == "__main__":
     client = mqtt.Client()
-    client.username_pw_set(username, password=password)
+    # client.username_pw_set(username, password=password)
     client.on_connect = on_connect
     client.on_message = on_message
 
